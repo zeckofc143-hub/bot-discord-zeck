@@ -1,0 +1,393 @@
+﻿<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#090f1b">
+  <meta name="description" content="Dashboard administrativo do Luckers Bot">
+  <title>Luckers Bot — Dashboard</title>
+  <link rel="stylesheet" href="/dashboard-assets/styles.css?v=20260714-2">
+</head>
+<body>
+  <div class="ambient ambient-one"></div>
+  <div class="ambient ambient-two"></div>
+
+  <main id="auth-screen" class="auth-screen hidden" aria-live="polite">
+    <section class="auth-card">
+      <div class="brand-orb brand-orb-large" aria-hidden="true">
+        <span class="antenna"></span>
+        <span class="bot-face"><i></i><i></i></span>
+      </div>
+      <span class="eyebrow">LUCKERS BOT</span>
+      <h1>Controle seu servidor em um só lugar.</h1>
+      <p id="auth-description">Entre com o Discord para visualizar métricas, gerenciar tickets e configurar o bot.</p>
+      <a id="login-button" class="primary-button auth-button" href="/auth/discord">
+        <span class="button-icon">↗</span>
+        Entrar com Discord
+      </a>
+      <div id="auth-help" class="auth-help hidden"></div>
+      <div class="auth-features">
+        <span>✓ OAuth2 seguro</span>
+        <span>✓ Apenas administradores</span>
+        <span>✓ Dados em tempo real</span>
+      </div>
+    </section>
+  </main>
+
+  <div id="app" class="app-shell hidden">
+    <aside id="sidebar" class="sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-orb" aria-hidden="true">
+          <span class="antenna"></span>
+          <span class="bot-face"><i></i><i></i></span>
+        </div>
+        <div>
+          <div class="brand-name" id="brand-name">Luckers Bot</div>
+          <span class="pro-pill">PRO</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav" aria-label="Navegação principal">
+        <button class="nav-item active" data-page="overview">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5v8a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 19.5zM9 21v-6h6v6"/></svg>
+          <span>Visão geral</span>
+        </button>
+        <button class="nav-item" data-page="tickets">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6.5A1.5 1.5 0 0 1 5.5 5h13A1.5 1.5 0 0 1 20 6.5V9a3 3 0 0 0 0 6v2.5a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 17.5V15a3 3 0 0 0 0-6zM9 8v8"/></svg>
+          <span>Tickets</span>
+          <span id="nav-ticket-count" class="nav-count">0</span>
+        </button>
+        <button class="nav-item" data-page="appearance">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18h1.1a1.9 1.9 0 0 0 0-3.8h-.7a1.6 1.6 0 0 1 0-3.2H15a6 6 0 0 0 0-12z"/><circle cx="7.5" cy="10" r="1"/><circle cx="9.5" cy="6.8" r="1"/><circle cx="14" cy="6.5" r="1"/><circle cx="17" cy="9.5" r="1"/></svg>
+          <span>Aparência</span>
+        </button>
+        <button class="nav-item" data-page="protections">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 20 6v5c0 5.2-3.3 8.7-8 10-4.7-1.3-8-4.8-8-10V6z"/><path d="m9 12 2 2 4-4"/></svg>
+          <span>Proteções</span>
+        </button>
+        <button class="nav-item" data-page="community">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3.5 20v-2a5.5 5.5 0 0 1 11 0v2M14 15.5a4.5 4.5 0 0 1 6.5 4"/></svg>
+          <span>Comunidade</span>
+        </button>
+        <button class="nav-item" data-page="logs">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l4 4v14H6z"/><path d="M15 3v5h5M9 12h6M9 16h6M9 8h2"/></svg>
+          <span>Logs</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <div class="bot-status-card">
+          <span id="bot-status-dot" class="status-dot"></span>
+          <div>
+            <strong id="bot-status-text">Bot conectando</strong>
+            <small id="bot-uptime">Uptime: —</small>
+          </div>
+          <span class="chevron">›</span>
+        </div>
+      </div>
+    </aside>
+
+    <div id="sidebar-overlay" class="sidebar-overlay"></div>
+
+    <section class="workspace">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button id="mobile-menu" class="icon-button mobile-menu" aria-label="Abrir menu">
+            <svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+          </button>
+          <div>
+            <span id="page-kicker" class="page-kicker">DASHBOARD</span>
+            <h1 id="page-title">Visão geral</h1>
+          </div>
+          <button id="publish-panel" class="primary-button">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 4 6 6-9 9-6 1 1-6zM12 6l6 6M5 5l2 2M3 10h3M10 3v3"/></svg>
+            Publicar painel
+          </button>
+        </div>
+        <div class="topbar-actions">
+          <label class="select-shell guild-select-shell">
+            <span id="guild-icon" class="select-avatar">L</span>
+            <select id="guild-select" aria-label="Selecionar servidor"></select>
+            <span class="select-chevron">⌄</span>
+          </label>
+          <div class="user-menu-wrap">
+            <button id="user-menu-button" class="user-menu-button" aria-expanded="false">
+              <span id="user-avatar" class="avatar avatar-medium">A</span>
+              <span class="user-copy"><strong id="user-name">Administrador</strong><small>Administrador</small></span>
+              <span class="select-chevron">⌄</span>
+            </button>
+            <div id="user-dropdown" class="user-dropdown hidden">
+              <button id="refresh-data">Atualizar dados</button>
+              <button id="logout-button" class="danger-text">Sair</button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div id="loading" class="loading-state">
+        <div class="loader"></div>
+        <p>Carregando dados do servidor...</p>
+      </div>
+
+      <div id="content" class="content hidden">
+        <section id="page-overview" class="page active-page" data-page-panel="overview">
+          <div id="stats-grid" class="stats-grid"></div>
+
+          <div class="overview-grid">
+            <article class="panel chart-panel">
+              <div class="panel-header">
+                <div>
+                  <span class="eyebrow">DESEMPENHO</span>
+                  <h2>Atividade dos tickets</h2>
+                </div>
+                <div class="range-pill">▣ 7 dias <span>⌄</span></div>
+              </div>
+              <div id="activity-chart" class="activity-chart" aria-label="Gráfico de atividade dos tickets"></div>
+            </article>
+
+            <article class="panel recent-panel">
+              <div class="panel-header">
+                <div>
+                  <span class="eyebrow">FILA ATUAL</span>
+                  <h2>Tickets recentes</h2>
+                </div>
+                <button class="ghost-button" data-go-page="tickets">Ver todos ↗</button>
+              </div>
+              <div id="recent-ticket-list" class="recent-ticket-list"></div>
+            </article>
+          </div>
+
+          <article class="panel table-panel">
+            <div class="panel-header">
+              <div>
+                <span class="eyebrow">ATENDIMENTO</span>
+                <h2>Tickets recentes</h2>
+              </div>
+              <div class="live-indicator"><span></span> Atualização ao vivo</div>
+            </div>
+            <div class="table-scroll">
+              <table>
+                <thead><tr><th>Ticket</th><th>Categoria</th><th>Status</th><th>Atribuído a</th><th>Prioridade</th><th>Atualizado</th><th></th></tr></thead>
+                <tbody id="overview-ticket-table"></tbody>
+              </table>
+            </div>
+          </article>
+        </section>
+
+        <section id="page-tickets" class="page" data-page-panel="tickets">
+          <article class="panel tickets-page-panel">
+            <div class="panel-header tickets-header">
+              <div>
+                <span class="eyebrow">CENTRAL DE ATENDIMENTO</span>
+                <h2>Todos os tickets</h2>
+                <p class="muted">Pesquise, filtre e assuma atendimentos sem sair do dashboard.</p>
+              </div>
+              <div class="ticket-toolbar">
+                <label class="search-field"><span>⌕</span><input id="ticket-search" type="search" placeholder="Buscar ticket ou usuário"></label>
+                <select id="ticket-status-filter" class="compact-select"><option value="all">Todos os status</option><option value="open">Aberto</option><option value="awaiting">Aguardando</option><option value="in_progress">Em andamento</option><option value="resolved">Resolvido</option></select>
+                <select id="ticket-category-filter" class="compact-select"><option value="all">Todas categorias</option></select>
+              </div>
+            </div>
+            <div class="ticket-summary-row" id="ticket-summary-row"></div>
+            <div class="table-scroll">
+              <table class="tickets-table">
+                <thead><tr><th>Ticket</th><th>Solicitante</th><th>Categoria</th><th>Status</th><th>Atendente</th><th>Cargo responsável</th><th>Prioridade</th><th>Aberto em</th><th>Ações</th></tr></thead>
+                <tbody id="all-ticket-table"></tbody>
+              </table>
+            </div>
+            <div id="ticket-empty" class="empty-state hidden">Nenhum ticket corresponde aos filtros.</div>
+          </article>
+        </section>
+
+        <section id="page-appearance" class="page" data-page-panel="appearance">
+          <div class="settings-grid">
+            <article class="panel settings-card">
+              <div class="panel-header"><div><span class="eyebrow">PERSONALIZAÇÃO</span><h2>Aparência do painel</h2></div></div>
+              <form id="appearance-form" class="settings-form">
+                <label>Título do painel<input id="panel-title-input" name="ticketPanelTitle" maxlength="256" required></label>
+                <label>Descrição<textarea id="panel-description-input" name="ticketPanelDescription" maxlength="3000" rows="5" required></textarea></label>
+                <div class="form-row">
+                  <label>Cor do painel<span class="color-input-wrap"><input id="panel-color-input" name="ticketPanelColor" type="color"><input id="panel-color-text" maxlength="7" pattern="#[0-9A-Fa-f]{6}"></span></label>
+                  <label>Cor do dashboard<span class="color-input-wrap"><input id="accent-color-input" name="dashboardAccent" type="color"><input id="accent-color-text" maxlength="7" pattern="#[0-9A-Fa-f]{6}"></span></label>
+                </div>
+                <label>URL do banner<input id="panel-banner-input" name="ticketPanelBanner" type="url" placeholder="https://..."></label>
+                <label>URL da miniatura<input id="panel-thumbnail-input" name="ticketPanelThumbnail" type="url" placeholder="https://..."></label>
+                <label>Máximo de tickets por membro<select id="max-tickets-input" name="maxOpenTickets"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></label>
+                <div class="section-label" style="margin-top:4px">Destino e equipe dos tickets</div>
+                <div class="form-row ticket-routing-fields">
+                  <label>Categoria onde os tickets serão criados<select id="appearance-ticket-category-input"></select></label>
+                  <label>Cargo de suporte padrão<select id="appearance-support-role-input"></select><small>Esse cargo verá os tickets quando o setor não tiver uma equipe específica.</small></label>
+                </div>
+                <label class="review-channel-field">Canal que receberá as avaliações dos atendimentos<select id="appearance-review-channel-input"></select><small>Quando o usuário escolher as estrelas e enviar o comentário opcional, a avaliação será publicada neste canal.</small></label>
+                <div class="section-label" style="margin-top:4px">Textos do embed</div>
+                <div class="form-row">
+                  <label>Título da seção "Setores"<input id="panel-sectors-title-input" maxlength="256" placeholder="Setores disponíveis"></label>
+                  <label>Título da seção "Como funciona?"<input id="panel-how-title-input" maxlength="256" placeholder="Como funciona?"></label>
+                </div>
+                <label>Texto de "Como funciona?"<input id="panel-how-text-input" maxlength="1000" placeholder="Escolha um setor, preencha o formulário e aguarde..."></label>
+                <label>Placeholder do menu de setores<input id="panel-menu-placeholder-input" maxlength="150" placeholder="📨 Selecione o setor do atendimento"></label>
+                <label>Rodapé do embed<input id="panel-footer-input" maxlength="200" placeholder="Ex: kurogiri gang • Atendimento"></label>
+                <div class="section-label" style="margin-top:4px">Setores de atendimento</div>
+                <div id="ticket-types-editor" class="ticket-types-editor"></div>
+                <button type="button" id="add-type-btn" class="ghost-button add-type-btn">＋ Adicionar setor</button>
+                <div class="publish-inline-row">
+                  <label class="publish-inline-label">Canal para publicar<select id="appearance-publish-channel" class="publish-channel-select"></select></label>
+                  <div class="publish-inline-actions">
+                    <button class="secondary-button" type="submit" id="btn-save-only">Salvar</button>
+                    <button class="primary-button" type="button" id="btn-save-and-publish">
+                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+                      Salvar e publicar
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </article>
+
+            <article class="panel preview-card">
+              <div class="panel-header"><div><span class="eyebrow">PRÉ-VISUALIZAÇÃO</span><h2>Como ficará no Discord</h2></div></div>
+              <div id="discord-preview" class="discord-preview">
+                <div class="discord-message">
+                  <div class="discord-bot-avatar brand-orb"><span class="antenna"></span><span class="bot-face"><i></i><i></i></span></div>
+                  <div class="discord-message-body">
+                    <div class="discord-author">Luckers Bot <span>APP</span> <small>Hoje às 12:00</small></div>
+                    <div id="preview-embed" class="discord-embed">
+                      <img id="preview-banner" class="preview-banner hidden" alt="Banner do painel">
+                      <div class="preview-content">
+                        <div>
+                          <h3 id="preview-title">CENTRAL DE ATENDIMENTO</h3>
+                          <p id="preview-description">Selecione abaixo o setor que melhor corresponde à sua solicitação.</p>
+                          <div class="preview-field"><strong>Como funciona?</strong><span>Escolha um setor, preencha o formulário e aguarde em seu canal privado.</span></div>
+                        </div>
+                        <img id="preview-thumbnail" class="preview-thumbnail hidden" alt="Miniatura do painel">
+                      </div>
+                    </div>
+                    <div class="discord-select-preview">📨 Selecione o setor do atendimento <span>⌄</span></div>
+                  </div>
+                </div>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section id="page-protections" class="page" data-page-panel="protections">
+          <div class="settings-grid protection-layout">
+            <article class="panel settings-card">
+              <div class="panel-header"><div><span class="eyebrow">SEGURANÇA</span><h2>Proteções automáticas</h2><p class="muted">Controle links, spam e comentários bloqueados com regras editáveis.</p></div></div>
+              <form id="protection-form" class="toggle-list">
+                <label class="toggle-card">
+                  <span class="toggle-icon">🔗</span>
+                  <span><strong>Anti-link</strong><small>Apaga convites e links enviados por membros sem permissão.</small></span>
+                  <input id="anti-link-input" type="checkbox" name="antiLink"><span class="toggle-switch"></span>
+                </label>
+                <label class="protection-field"><span><strong>Domínios permitidos</strong><small>Links desses sites não serão apagados. Separe por vírgulas.</small></span><input id="allowed-domains-input" type="text" maxlength="1500" placeholder="youtube.com, seu-site.com"></label>
+                <label class="toggle-card">
+                  <span class="toggle-icon">⚡</span>
+                  <span><strong>Anti-spam</strong><small>Aplica timeout automático quando o limite é excedido.</small></span>
+                  <input id="anti-spam-input" type="checkbox" name="antiSpam"><span class="toggle-switch"></span>
+                </label>
+                <label class="range-setting">
+                  <span><strong>Limite de spam</strong><small>Quantidade de mensagens dentro da janela configurada</small></span>
+                  <div><input id="spam-limit-input" type="range" min="3" max="10" step="1"><output id="spam-limit-output">6</output></div>
+                </label>
+                <label class="range-setting">
+                  <span><strong>Janela do anti-spam</strong><small>Intervalo observado, em segundos</small></span>
+                  <div><input id="spam-window-input" type="range" min="3" max="30" step="1"><output id="spam-window-output">8</output></div>
+                </label>
+                <label class="range-setting">
+                  <span><strong>Timeout do anti-spam</strong><small>Duração da punição, em minutos</small></span>
+                  <div><input id="spam-mute-input" type="range" min="1" max="60" step="1"><output id="spam-mute-output">5</output></div>
+                </label>
+                <label class="toggle-card">
+                  <span class="toggle-icon">🛡️</span>
+                  <span><strong>Filtro de palavras e comentários</strong><small>Apaga termos configurados e detecta desvios como “porr4”, “p0r64” e letras separadas.</small></span>
+                  <input id="anti-swear-input" type="checkbox" name="antiSwear"><span class="toggle-switch"></span>
+                </label>
+                <div id="swear-settings" class="swear-settings">
+                  <div class="filter-heading"><strong>Prompt / lista de palavras que dão warn ou mute</strong><small>Esta lista fica visível mesmo com o filtro desligado. Cole vários itens separados por vírgula ou linha; o bot detecta acentos, números, símbolos e repetições.</small></div>
+                  <p id="swear-status-note" class="filter-status-note"></p>
+                  <div class="swear-add-row"><textarea id="swear-word-input" rows="3" maxlength="3000" placeholder="Uma palavra ou frase por linha&#10;ou, separada, por vírgulas"></textarea><button id="swear-add-btn" class="secondary-button" type="button">Adicionar</button></div>
+                  <div id="swear-tag-area" class="swear-tag-area" aria-live="polite"></div>
+                  <div class="form-row filter-grid">
+                    <label>Ação após apagar<select id="swear-action-input"><option value="delete">Somente apagar</option><option value="warn">Apagar e avisar</option><option value="timeout">Avisar e aplicar timeout</option></select></label>
+                    <label>Janela dos avisos (horas)<input id="swear-window-input" type="number" min="1" max="720" step="1"></label>
+                  </div>
+                  <div id="swear-escalation-settings" class="form-row filter-grid">
+                    <label>Avisos até a punição<input id="swear-warn-input" type="range" min="1" max="10" step="1"><output id="swear-warn-output">3</output></label>
+                    <label>Timeout (minutos)<input id="swear-mute-input" type="number" min="1" max="1440" step="1"></label>
+                  </div>
+                  <label class="protection-field"><span><strong>Mensagem automática</strong><small>Texto mostrado brevemente após remover o comentário.</small></span><input id="swear-notice-input" type="text" maxlength="180" placeholder="Sua mensagem foi removida..."></label>
+                  <div class="form-row filter-grid">
+                    <label>Canais ignorados<select id="swear-exempt-channels-input" multiple size="4"></select><small>Use Ctrl/Cmd para selecionar vários.</small></label>
+                    <label>Cargos ignorados<select id="swear-exempt-roles-input" multiple size="4"></select><small>Moderadores com “Gerenciar mensagens” já são ignorados.</small></label>
+                  </div>
+                  <div class="filter-test-row"><input id="swear-test-input" type="text" maxlength="2000" placeholder="Teste uma mensagem antes de salvar"><button id="swear-test-btn" class="secondary-button" type="button">Testar filtro</button></div>
+                  <p id="swear-test-result" class="filter-test-result" aria-live="polite"></p>
+                </div>
+                <button class="primary-button form-submit" type="submit">Salvar proteções</button>
+              </form>
+            </article>
+            <article class="panel security-score-card">
+              <div class="score-ring"><span id="security-score">70</span><small>/100</small></div>
+              <h2>Nível de proteção</h2>
+              <p id="security-message">Ative as proteções recomendadas para melhorar a segurança do servidor.</p>
+              <div class="security-checks"><span id="check-link">○ Anti-link</span><span id="check-spam">○ Anti-spam</span><span>✓ Logs administrativos</span><span id="check-swear">&#9711; Anti-xingamento</span></div>
+            </article>
+          </div>
+        </section>
+
+        <section id="page-community" class="page" data-page-panel="community">
+          <article class="panel settings-card wide-settings">
+            <div class="panel-header"><div><span class="eyebrow">AUTOMAÇÃO</span><h2>Comunidade e recursos</h2><p class="muted">Conecte os canais e cargos usados pelo bot.</p></div></div>
+            <form id="community-form" class="settings-form resource-form">
+              <div class="section-label">Tickets e administração</div>
+              <div class="form-row">
+                <label>Canal de logs<select id="logs-channel-input" name="logsChannelId"></select></label>
+                <label>Canal do painel<select id="panel-channel-input" name="ticketPanelChannelId"></select></label>
+              </div>
+              <div class="form-row">
+                <label>Categoria dos tickets<select id="ticket-category-input" name="ticketCategoryId"></select></label>
+                <label>Cargo de suporte padrão<select id="support-role-input" name="supportRoleId"></select><small>Usado quando o setor não possui um cargo específico.</small></label>
+              </div>
+              <div class="section-label">Comunidade</div>
+              <div class="form-row">
+                <label>Boas-vindas<select id="welcome-channel-input" name="welcomeChannelId"></select></label>
+                <label>Saídas<select id="leave-channel-input" name="leaveChannelId"></select></label>
+              </div>
+              <div class="form-row">
+                <label>Canal de sugestões<select id="suggestions-channel-input" name="suggestionsChannelId"></select></label>
+                <label>Cargo automático<select id="auto-role-input" name="autoRoleId"></select></label>
+              </div>
+              <button class="primary-button form-submit" type="submit">Salvar recursos</button>
+            </form>
+          </article>
+        </section>
+
+        <section id="page-logs" class="page" data-page-panel="logs">
+          <article class="panel logs-panel">
+            <div class="panel-header logs-header">
+              <div><span class="eyebrow">AUDITORIA</span><h2>Logs do sistema</h2><p class="muted">Histórico local de tickets, moderação e alterações do dashboard.</p></div>
+              <label class="search-field"><span>⌕</span><input id="log-search" type="search" placeholder="Pesquisar nos logs"></label>
+            </div>
+            <div id="audit-list" class="audit-list"></div>
+            <div id="audit-empty" class="empty-state hidden">Nenhum log encontrado.</div>
+          </article>
+        </section>
+      </div>
+    </section>
+  </div>
+
+  <div id="toast-region" class="toast-region" aria-live="polite" aria-atomic="true"></div>
+
+  <dialog id="publish-dialog" class="app-dialog">
+    <form method="dialog" class="dialog-card" id="publish-form">
+      <div class="dialog-icon">🚀</div>
+      <h2>Publicar painel</h2>
+      <p>Escolha o canal onde a central de atendimento será enviada.</p>
+      <label>Canal<select id="publish-channel-select" required></select></label>
+      <div class="dialog-actions"><button value="cancel" class="secondary-button">Cancelar</button><button id="confirm-publish" value="default" class="primary-button">Publicar agora</button></div>
+    </form>
+  </dialog>
+
+  <script src="/dashboard-assets/app.js?v=20260714-3" defer></script>
+</body>
+</html>

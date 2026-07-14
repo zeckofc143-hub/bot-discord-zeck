@@ -1,0 +1,10 @@
+node_modules/
+.env
+data/database.json
+data/database.backup.json
+data/database.tmp.json
+data/*.log
+npm-debug.log*
+.agents/
+.vscode/
+patch-swear.mjs

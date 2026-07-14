@@ -1,0 +1,25 @@
+{
+  "name": "bot-discord-completo",
+  "version": "3.0.0",
+  "description": "Bot Discord em PT-BR com dashboard web, tickets, moderacao, logs, economia e /falar",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "deploy": "node src/deploy-commands.js",
+    "check": "node --check src/index.js && node --check src/database.js && node --check src/moderation.js && node --check src/commands.js && node --check src/dashboard.js && node --check public/dashboard/app.js && node src/validate.js",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "discord.js": "^14.26.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "pg": "^8.22.0"
+  },
+  "overrides": {
+    "undici": "6.27.0"
+  }
+}
