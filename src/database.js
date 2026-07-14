@@ -59,14 +59,14 @@ function databaseSeed() {
 }
 
 function postgresOptions() {
-  const connectionString = process.env.DATABASE_URL;
-  const requiresSsl = process.env.DATABASE_SSL === 'true' || /sslmode=(require|verify-ca|verify-full)/i.test(connectionString || '');
+  const connectionString = (process.env.DATABASE_URL || '').replace(/([?&])sslmode=require(?=&|$)/i, '$1sslmode=verify-full');
+  const hasSslMode = /[?&]sslmode=/i.test(connectionString);
   return {
     connectionString,
     max: 2,
     idleTimeoutMillis: 30_000,
     connectionTimeoutMillis: 10_000,
-    ...(requiresSsl ? { ssl: { rejectUnauthorized: false } } : {}),
+    ...(process.env.DATABASE_SSL === 'true' && !hasSslMode ? { ssl: { rejectUnauthorized: true } } : {}),
   };
 }
 
