@@ -1,0 +1,27 @@
+(()=>{'use strict';
+const D=window.ROULETTE_DATA;if(!D)return;
+const S=s=>s.split('|');
+const human=S('0,45 m • 2–4 kg • recém-nascido|0,80 m • 9–13 kg • muito pequeno|1,20 m • 20–32 kg • pequeno|1,45 m • 38–52 kg • compacto|1,55 m • 45–62 kg • baixo|1,65 m • 52–72 kg • médio-baixo|1,72 m • 58–78 kg • médio|1,78 m • 62–86 kg • médio|1,85 m • 70–95 kg • alto|1,92 m • 78–108 kg • muito alto|2,00 m • 88–125 kg • gigante humanoide|2,10 m • 100–145 kg • extremamente alto|2,25 m • 120–180 kg • anormalmente grande');
+const humanoidTall=S('1,60 m • porte compacto|1,75 m • porte médio|1,90 m • porte alto|2,05 m • porte imponente|2,20 m • porte muito alto|2,40 m • porte gigante|2,70 m • porte colossal humanoide|3,00 m • porte monstruoso');
+const dwarf=S('0,80 m • 25–40 kg|0,95 m • 32–50 kg|1,05 m • 38–58 kg|1,15 m • 45–68 kg|1,25 m • 52–78 kg|1,35 m • 60–90 kg|1,45 m • 70–105 kg');
+const fairy=S('0,10 m • 0,03–0,08 kg|0,20 m • 0,1–0,3 kg|0,35 m • 0,4–0,9 kg|0,50 m • 1–3 kg|0,75 m • 4–9 kg|1,00 m • 10–20 kg|1,20 m • 18–30 kg');
+const giant=S('2,5 m • 180–280 kg|3 m • 250–450 kg|4 m • 0,5–1 t|5 m • 1–2 t|7 m • 3–6 t|10 m • 8–16 t|15 m • 25–50 t|20 m • 60–120 t|30 m • 180–350 t');
+const titan=S('3 m • 0,3–0,8 t|5 m • 1–3 t|7 m • 3–7 t|10 m • 8–18 t|12 m • 15–30 t|15 m • 25–55 t|20 m • 60–120 t|30 m • 180–350 t|40 m • 400–700 t|50 m • 0,8–1,3 kt|60 m • 1,4–2,2 kt');
+const kaiju=S('10 m • 20–80 t|20 m • 100–350 t|30 m • 300–900 t|50 m • 1–3 kt|70 m • 3–8 kt|100 m • 10–25 kt|150 m • 30–70 kt|200 m • 80–160 kt|300 m • 250–500 kt');
+const dragon=S('1,5 m comprimento • 2,5 m envergadura|3 m comprimento • 5 m envergadura|5 m comprimento • 8 m envergadura|8 m comprimento • 13 m envergadura|12 m comprimento • 20 m envergadura|18 m comprimento • 30 m envergadura|25 m comprimento • 42 m envergadura|40 m comprimento • 68 m envergadura|60 m comprimento • 100 m envergadura|100 m comprimento • 170 m envergadura|200 m comprimento • 320 m envergadura');
+const serpent=S('1 m de comprimento • corpo fino|2 m de comprimento • corpo médio|3 m de comprimento • corpo robusto|5 m de comprimento • corpo grande|8 m de comprimento • corpo enorme|12 m de comprimento • corpo colossal|20 m de comprimento • corpo monstruoso');
+const aquatic=S('0,8 m comprimento • 12–25 kg|1,2 m comprimento • 25–55 kg|1,6 m comprimento • 45–85 kg|2 m comprimento • 70–130 kg|2,5 m comprimento • 110–220 kg|3,5 m comprimento • 250–500 kg|5 m comprimento • 0,6–1,2 t');
+const slime=S('0,15 m diâmetro • 0,5–2 kg|0,30 m diâmetro • 2–8 kg|0,60 m diâmetro • 8–30 kg|1 m diâmetro • 25–80 kg|1,5 m diâmetro • 70–180 kg|2 m diâmetro • 150–350 kg|3 m diâmetro • 0,3–0,8 t|5 m diâmetro • 1–3 t');
+const mech=S('1,5 m • 90–160 kg|1,8 m • 130–220 kg|2,2 m • 180–350 kg|3 m • 0,4–0,9 t|5 m • 1,5–4 t|8 m • 5–12 t|12 m • 15–35 t|20 m • 50–120 t');
+const cybertron=S('3 m • 1–3 t|4 m • 2–5 t|5 m • 4–8 t|6 m • 6–12 t|8 m • 10–20 t|10 m • 18–35 t|12 m • 30–55 t|15 m • 50–90 t|20 m • 100–180 t');
+const spirit=S('0,5 m de manifestação|1 m de manifestação|1,5 m de manifestação|2 m de manifestação|3 m de manifestação|5 m de manifestação|10 m de manifestação|20 m de manifestação|50 m de manifestação|Forma sem tamanho fixo');
+const small=new Set(S('Fada|Slime|Goblin|Kobold|Pokémon'));
+const tall=new Set(S('Viltrumita|Kryptoniano|Saiyajin|Ghoul|Shinigami|Quincy|Otsutsuki|Yautja|Sangheili|Xenomorfo|Orc|Oni|Minotauro|Tauren|Lunarian|Anjo|Anjo Caído'));
+const serp=new Set(S('Nagá|Lâmia|Serpentídeo'));
+const aqua=new Set(S('Sereia|Tritão|Homem-Peixe|Zora|Asari'));
+const spectral=new Set(S('Fantasma|Espectro|Espírito|Elemental|Hollow|Celestial|Deus|Semideus|Novo Deus'));
+D.sizeOptionsFor=r=>{
+ if(r==='Humano')return human;if(r==='Anão')return dwarf;if(r==='Fada')return fairy;if(r==='Gigante')return giant;if(r==='Titã')return titan;if(r==='Kaiju')return kaiju;if(r==='Dragão')return dragon;if(r==='Slime')return slime;if(r==='Cybertroniano')return cybertron;if(r==='Ciborgue'||r==='Androide'||r==='Warforged'||r==='Golem')return mech;if(serp.has(r))return serpent;if(aqua.has(r))return aquatic;if(spectral.has(r))return spirit;if(small.has(r))return [...fairy,...human.slice(2,7)];if(tall.has(r))return humanoidTall;return human.slice(3);
+};
+D.SIZE_V11=true;
+})();
