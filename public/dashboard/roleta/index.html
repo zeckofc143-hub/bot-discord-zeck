@@ -13,7 +13,7 @@
       <div>
         <p class="eyebrow">ROLETA ENCADEADA • FANMADE</p>
         <h1>Roleta Multiverso</h1>
-        <p class="subtitle">194+ raças • 4.000+ poderes • 12 mega-roletas com 1.024+ opções cada • 36 sub-roletas com 1.024+ opções cada</p>
+        <p class="subtitle">Raças conhecidas + ficção nerd • 4.000+ poderes • sub-roletas que mudam conforme o resultado • status ao vivo</p>
       </div>
       <button id="resetBtn" class="ghost-btn" type="button">↻ Reiniciar</button>
     </header>
@@ -35,7 +35,7 @@
 
     <section class="wheel-wrap">
       <div class="pointer" aria-hidden="true"></div>
-      <canvas id="wheel" width="900" height="900" aria-label="Roleta"></canvas>
+      <canvas id="wheel" width="1000" height="1000" aria-label="Roleta"></canvas>
       <button id="spinBtn" class="spin-btn" type="button">GIRAR</button>
     </section>
 
@@ -43,6 +43,8 @@
       <button id="optionsBtn" class="secondary-btn" type="button">☰ Ver opções</button>
       <button id="sheetBtn" class="secondary-btn" type="button">📜 Minha ficha</button>
     </section>
+
+    <section id="liveStatus" class="live-status" aria-label="Status atual do personagem"></section>
 
     <section id="pathCard" class="path-card">
       <div class="section-heading">
@@ -85,6 +87,7 @@
   <script src="./mega-addon.js" defer></script>
   <script src="./mega-extra.js" defer></script>
   <script src="./expansion-v5.js" defer></script>
-  <script src="./app-v5.js" defer></script>
+  <script src="./races-v6.js" defer></script>
+  <script src="./app-v6.js" defer></script>
 </body>
 </html>
