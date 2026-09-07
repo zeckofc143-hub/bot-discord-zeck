@@ -1,74 +1,369 @@
-const RACES = [
-'Humano','Elfo','Anão','Orc','Goblin','Hobgoblin','Troll','Ogro','Gigante','Gnomo','Halfling','Fada','Pixie','Sereiano','Tritão','Homem-Peixe','Atlante','Vampiro','Dhampir','Lobisomem','Metamorfo','Demônio','Oni','Diabo','Anjo','Nephilim','Anjo Caído','Espírito','Fantasma','Espectro','Revenante','Esqueleto','Lich','Zumbi','Múmia','Dullahan','Golem','Autômato','Constructo Arcano','Slime','Mímico','Ent','Dríade','Mandrágora','Fungóide','Homem-Fera','Felinoide','Caninoide','Ursino','Lagartoide','Draconato','Dragão','Kobold','Nagá','Serpentídeo','Centauro','Minotauro','Sátiro','Harpia','Grifoide','Ave-Humana','Aracnídeo','Escorpiônida','Insetoide','Abissal','Filho do Kraken','Celestial','Elemental','Djinn','Ifrit','Sylph','Undine','Alienígena','Ciborgue','Androide','Mutante','Parasita','Simbionte','Clone','Nascido do Vazio','Nascido das Estrelas','Nascido dos Sonhos','Nascido dos Pesadelos','Nascido das Sombras','Nascido da Luz','Nascido do Cristal','Nascido do Magma','Nascido do Gelo','Nascido da Tempestade','Nascido da Areia','Nascido do Pântano','Reptiliano','Anfíbio','Povo-Tubarão','Povo-Coelho','Povo-Corvo','Povo-Raposa','Povo-Cervo','Povo-Bode','Povo-Javali'];
+(() => {
+  'use strict';
+  const D = window.ROULETTE_DATA;
+  if (!D) throw new Error('ROULETTE_DATA não carregado.');
 
-const SUBTYPES = {
-'Humano':['Comum','Desperto','Abençoado','Amaldiçoado','Nobre','Nômade','Descendente de Herói','Descendente Arcano'],
-'Elfo':['Alto Elfo','Elfo da Floresta','Elfo Sombrio','Elfo Lunar','Elfo Solar','Elfo do Gelo','Elfo do Mar','Elfo das Cinzas'],
-'Anão':['da Montanha','das Profundezas','Rúnico','de Ferro','do Gelo','do Magma'].map(x=>`Anão ${x}`),
-'Orc':['Verde','Cinzento','de Guerra','Xamânico','Abissal','do Gelo'].map(x=>`Orc ${x}`),
-'Goblin':['Comum','da Caverna','Engenhoqueiro','Xamã','Sombrio','Rei'].map(x=>`Goblin ${x}`),
-'Gigante':['de Pedra','do Gelo','do Fogo','da Tempestade','das Nuvens','Abissal'].map(x=>`Gigante ${x}`),
-'Fada':['da Luz','da Lua','da Floresta','das Flores','Sombria','do Inverno','do Destino'].map(x=>`Fada ${x}`),
-'Vampiro':['Sangue Puro','Nobre da Noite','Bestial','Sombrio','Arcano','Ancestral','Carmesim'],
-'Lobisomem':['Lobo Cinzento','Lobo Branco','Lobo Negro','Lobo Carmesim','Lobo Lunar','Lobo Primordial','Lobo da Tempestade'],
-'Metamorfo':['Animal','Elemental','Sombrio','Perfeito','Parcial','Espiritual'].map(x=>`Metamorfo ${x}`),
-'Demônio':['Infernal','Abissal','Sombrio','Oni Demoníaco','Bestial','Arcano','do Caos','Antigo','Arquidemônio'],
-'Oni':['Vermelho','Azul','Negro','Branco','da Tempestade','das Montanhas','Espiritual'].map(x=>`Oni ${x}`),
-'Anjo':['Guardião','Guerreiro','da Cura','da Luz','do Julgamento','Serafim','Querubim','Arcanjo'],
-'Espírito':['da Natureza','Ancestral','Elemental','Guardião','Errante','Astral'].map(x=>`Espírito ${x}`),
-'Lich':['Arcano','de Gelo','Sombrio','Astral','Ancestral','Coroado'].map(x=>`Lich ${x}`),
-'Golem':['de Pedra','de Ferro','de Cristal','de Madeira','Rúnico','de Magma','de Gelo'].map(x=>`Golem ${x}`),
-'Slime':['Comum','Ácido','de Cristal','de Fogo','de Gelo','Sombrio','Metamorfo','Rei'].map(x=>`Slime ${x}`),
-'Draconato':['de Fogo','de Gelo','de Raio','de Terra','de Luz','Sombrio','Arcano'].map(x=>`Draconato ${x}`),
-'Dragão':['de Fogo','de Gelo','da Tempestade','de Terra','do Mar','de Luz','Sombrio','Astral','do Vazio','Ancestral'].map(x=>`Dragão ${x}`),
-'Elemental':['de Fogo','de Água','de Terra','de Ar','de Raio','de Gelo','de Luz','de Sombra','de Cristal','de Magma'].map(x=>`Elemental ${x}`),
-'Alienígena':['Humanoide','Insectoide','Reptiliano','Aquático','Silício','Energia Viva','Colmeia','Metamorfo Cósmico'],
-'Mutante':['Estável','Adaptativo','Psíquico','Elemental','Bestial','Regenerativo','Cósmico'].map(x=>`Mutante ${x}`),
-'Nascido do Vazio':['Vazio Silencioso','Vazio Faminto','Vazio Astral','Vazio Sombrio','Vazio Antigo'],
-'Nascido das Estrelas':['Solar','Lunar','Nebular','Cometa','Constelação','Supernova']};
+  const $ = id => document.getElementById(id);
+  const canvas = $('wheel');
+  const ctx = canvas.getContext('2d');
+  const spinBtn = $('spinBtn');
+  const resetBtn = $('resetBtn');
+  const stageTitle = $('stageTitle');
+  const stageIcon = $('stageIcon');
+  const stageQuestion = $('stageQuestion');
+  const stageHint = $('stageHint');
+  const resultText = $('resultText');
+  const stepLabel = $('stepLabel');
+  const progressFill = $('progressFill');
+  const pathList = $('pathList');
+  const pathCount = $('pathCount');
+  const optionsBtn = $('optionsBtn');
+  const sheetBtn = $('sheetBtn');
+  const optionsPanel = $('optionsPanel');
+  const sheetPanel = $('sheetPanel');
+  const optionsTitle = $('optionsTitle');
+  const optionsGrid = $('optionsGrid');
+  const optionSearch = $('optionSearch');
+  const sheetContent = $('sheetContent');
+  const copyBtn = $('copyBtn');
+  const toast = $('toast');
 
-const RACE_TRAITS = {
-'Demônio':['Chifres de Obsidiana','Olhos Carmesins','Aura de Medo','Sombra Viva','Fogo Negro','Runas na Pele','Asas Rasgadas','Coroa Abissal'],
-'Anjo':['Asas Radiantes','Halo Dourado','Olhos de Luz','Voz Sagrada','Marca Solar','Plumas Prateadas','Aura Serena'],
-'Vampiro':['Visão Noturna Suprema','Névoa Carmesim','Passo Sombrio','Presença Hipnótica','Regeneração Noturna','Sentidos Predatórios'],
-'Dragão':['Escamas Imperiais','Sopro Ampliado','Asas Colossais','Olhos Dracônicos','Coração Elemental','Presença Dracônica'],
-'Lobisomem':['Lua Cheia','Lua Nova','Lua Carmesim','Lua Azul','Lua Prateada','Lua Negra','Lua Dourada'],
-'Elfo':['Olhos Astrais','Ouvido da Floresta','Passos Sem Som','Afinidade Arcana','Memória Ancestral','Graça Lunar'],
-'Golem':['Runa Antiga','Cristal de Mana','Coração Mecânico','Pedra Estelar','Núcleo Elemental','Selo Guardião'],
-'Elemental':['Corpo Fluido','Corpo Cristalino','Corpo Incandescente','Corpo Gasoso','Corpo Tempestuoso','Corpo Rúnico']};
+  const palette = ['#ff3b30','#ff9500','#ffcc00','#34c759','#00c7be','#32ade6','#007aff','#5856d6','#af52de','#ff2d55'];
+  const darkPalette = ['#4b0a0a','#6a2200','#6f5600','#0d4d20','#064a45','#0b3857','#092f66','#28225f','#512066','#6b1033'];
 
-const POWER_CONCEPTS=['Fogo','Água','Gelo','Terra','Ar','Raio','Luz','Sombra','Plantas','Gravidade','Telecinese','Telepatia','Ilusão','Cura','Espaço','Tempo','Energia','Mana','Runas','Espíritos','Sonhos','Emoções','Cristais','Tecnologia','Magnetismo','Vibração','Astral','Vazio','Névoa','Areia','Metal','Plasma','Fumaça','Som','Natureza','Tempestade','Lava','Estrelas'];
-const POWER_FORMS=['Manipulação de','Criação de','Corpo de','Barreira de','Absorção de','Campo de','Passo de','Sentido de'];
-const SPECIAL_POWERS=['Superforça','Supervelocidade','Superagilidade','Superresistência','Reflexos Aprimorados','Sentidos Aprimorados','Visão Noturna','Visão Térmica','Sentido de Perigo','Regeneração','Metamorfose','Transformação Animal','Transformação Elemental','Alteração de Tamanho','Elasticidade','Clonagem','Duplicação Temporária','Teletransporte','Portal Espacial','Troca de Posição','Projeção Astral','Invocação de Familiar','Invocação Elemental','Invocação Espiritual','Comunicação com Espíritos','Invisibilidade Óptica','Camuflagem Sombria','Sorte Sobrenatural','Azar Sobrenatural','Intuição Perfeita','Adaptação Evolutiva','Aprendizado Acelerado','Memória Perfeita','Análise de Habilidades','Imitação de Técnicas','Cópia Limitada de Poder','Anulação Temporária de Poder','Amplificação de Poder','Compartilhamento de Poder','Armazenamento de Poder','Evolução de Poder','Combinação de Poderes','Resistência a Poderes','Detecção de Poderes','Manipulação de Probabilidade','Manipulação de Vetores','Manipulação de Inércia','Manipulação de Densidade','Manipulação de Massa','Manipulação de Fricção','Entrada em Sonhos','Sonho Lúcido Perfeito','Empatia Sobrenatural','Aura de Coragem','Aura de Calma','Leitura de Intenção','Dobra Espacial','Sala Dimensional','Energia Solar','Energia Lunar','Energia Estelar','Corpo Estelar','Interface Mental','Controle de Máquinas'];
-const POWERS=[...new Set([...POWER_CONCEPTS.flatMap(c=>POWER_FORMS.map(f=>`${f} ${c}`)),...SPECIAL_POWERS])];
+  const META = {
+    race:['Raça','🧬','Qual será sua raça?','100 raças. O resultado abre sub-roletas próprias.'],
+    subtype:['Sub-raça / linhagem','🧬','Que tipo da sua raça você é?','Cada raça possui sua própria linhagem.'],
+    raceTrait:['Traço racial','✨','Qual traço especial veio junto?','Esse traço depende da família da raça.'],
+    raceRank:['Posição racial','👑','Qual é seu nível dentro da própria espécie?','A escala muda conforme a raça.'],
+    age:['Idade','⌛','Qual é sua idade aparente?','Algumas raças vivem muito mais que outras.'],
+    height:['Tamanho','📐','Qual é seu tamanho?','Valores comuns e anormais estão misturados.'],
+    archetype:['Arquétipo','🃏','Qual é seu arquétipo?','Mais de 100 papéis narrativos.'],
+    title:['Título','📕','Qual é seu título?','Centenas de títulos possíveis.'],
+    morality:['Personalidade-base','🎭','Qual é sua tendência de personalidade?','Isso não prende o personagem; é só o ponto de partida.'],
+    social:['Reputação','🌐','Quão conhecido você é?','De desconhecido a lenda de vários mundos.'],
+    hasPower:['Você tem algum poder?','❓','Você nasceu/despertou com poderes?','Se cair sim, abre várias sub-roletas.'],
+    powerCount:['Quantidade de poderes','🔢','Quantos poderes você possui?','Cada poder ganha estilo, rank, controle e custo.'],
+    power:['Poder','⚡','Qual poder você recebeu?','Mais de mil combinações no banco.'],
+    powerStyle:['Forma do poder','🌀','Como esse poder se manifesta?','A forma muda como ele aparece na história.'],
+    powerRank:['Rank do poder','📈','Qual é a raridade/escala desse poder?','Escala puramente fictícia.'],
+    powerControl:['Controle','🎯','Quanto controle você tem desse poder?','De instável a perfeito.'],
+    powerCost:['Custo / condição','⏳','Qual é o custo narrativo desse poder?','Uma limitação deixa o resultado mais interessante.'],
+    class:['Classe','🧭','Qual é sua classe?','A classe não precisa combinar com a raça.'],
+    affinity:['Afinidade','🔮','Qual é sua afinidade principal?','Elemental, abstrata, cósmica e outras.'],
+    talent:['Talento','🌟','Qual talento natural você possui?','É uma vantagem adicional.'],
+    limit:['Limitação geral','⛓️','Qual é sua principal limitação?','Pode afetar poderes, magia ou estilo geral.'],
+    intelligence:['Inteligência','🧠','Qual é sua inteligência?','Escala fictícia, indo do comum ao absurdo.'],
+    combat:['Combate','🤼','Qual é seu domínio de combate fictício?','Mede experiência narrativa, não técnica real.'],
+    speed:['Velocidade','⚡','Qual é sua velocidade?','Escala de power-scaling fictícia.'],
+    resistance:['Resistência','🛡️','Qual é sua resistência?','Escala fictícia de power-scaling.'],
+    strength:['Força','💪','Qual é sua força?','Escala fictícia de power-scaling.'],
+    luck:['Sorte','🍀','Quanta sorte você tem?','Pode mudar totalmente o personagem.'],
+    hasItem:['Artefato fantástico?','💎','Você possui um artefato puramente fictício?','Se cair sim, abre sub-roletas do artefato.'],
+    item:['Artefato fictício','💠','Qual artefato fantástico você possui?','Somente itens fictícios/mágicos nesta roleta.'],
+    mastery:['Maestria com artefato','✨','Qual seu nível de maestria?','É apenas escala narrativa.'],
+    enchantCount:['Encantamentos','🔢','Quantos encantamentos o artefato possui?','Pode cair zero.'],
+    enchant:['Encantamento do artefato','💎','Qual encantamento ele recebeu?','Centenas de efeitos fictícios.'],
+    origin:['Origem','🗺️','De onde você veio?','Mundo, plano, cidade ou origem estranha.'],
+    whatNow:['O que faz agora?','🧭','Depois de tudo isso, o que você faz?','Última roleta da ficha.'],
+    done:['Ficha concluída','✅','Seu personagem está pronto.','Você pode copiar a ficha ou reiniciar.']
+  };
 
-const CLASSES=['Guerreiro','Mago','Arqueiro','Ladino','Paladino','Clérigo','Monge','Bardo','Druida','Feiticeiro','Bruxo','Cavaleiro Rúnico','Espadachim Místico','Invocador','Alquimista','Xamã','Guardião','Caçador','Explorador','Domador de Feras','Mestre de Runas','Tecnomago','Psíquico','Oráculo','Ilusionista','Curandeiro','Místico','Elementalista','Geomante','Piromante','Hidromante','Criomante','Aeromante','Eletromante','Astrólogo','Cronomante','Espacialista','Artífice','Berserker','Sentinela','Duelista','Acrobata','Mestre de Familiares','Guardião Astral','Cavaleiro Dracônico','Monge Astral','Sacerdote Solar','Sacerdote Lunar','Explorador do Vazio','Andarilho Dimensional','Caçador de Relíquias','Mestre de Barreiras','Tecelão de Mana','Mestre de Selos','Mestre de Cristais','Invocador Celestial','Invocador Abissal','Aventureiro','Erudito Arcano','Guardião de Portais'];
-const AFFINITIES=['Fogo','Água','Gelo','Terra','Ar','Raio','Luz','Sombra','Natureza','Metal','Cristal','Magma','Areia','Névoa','Som','Gravidade','Espaço','Tempo','Astral','Solar','Lunar','Estelar','Vazio','Espiritual','Psíquica','Ilusão','Runas','Mana Pura','Tecnologia','Sonho','Tempestade','Fumaça','Cinzas','Vidro','Papel','Madeira','Plasma','Magnetismo','Vibração','Energia','Cura','Invocação','Bestial','Caos','Ordem','Destino','Mar','Floresta','Montanha','Nenhuma'];
-const TALENTS=['Prodígio Arcano','Corpo Abençoado','Memória Perfeita','Instinto de Batalha','Afinidade Dupla','Mana Abundante','Regeneração Natural','Aprendizado Rápido','Vontade Inabalável','Sorte Incomum','Olhos Místicos','Ouvido Absoluto','Passos Silenciosos','Presença Imponente','Mestre Improvisador','Controle Fino de Mana','Grande Reserva Física','Resistência Elemental','Resistência Mental','Resistência Espiritual','Talento para Runas','Talento para Invocação','Talento para Cura','Talento para Ilusão','Talento para Alquimia','Talento para Tecnologia','Talento para Estratégia','Talento para Sobrevivência','Despertar Precoce','Potencial Oculto','Adaptação Rápida','Evolução em Combate','Sincronia Elemental','Sincronia Astral','Visão de Fluxo','Percepção de Fraquezas','Intuição de Perigo','Reflexos Naturais','Disciplina Mental','Criatividade Mágica'];
-const WEAKNESSES=['Mana limitada','Recarga longa após grandes técnicas','Poder instável sob estresse','Baixa resistência física','Baixa resistência mágica','Dificuldade contra ilusões','Dificuldade contra ataques mentais','Perde força longe do próprio elemento','Precisa de concentração','Poderes deixam rastros visíveis','Só usa o máximo por pouco tempo','Afinidade bloqueia o elemento oposto','Teletransporte exige destino conhecido','Cura funciona pior em si mesmo','Clones dividem energia','Invocações consomem muita mana','Barreiras reduzem mobilidade','Transformação tem tempo limitado','Poder cresce devagar','Poder forte porém pouco preciso','Vulnerável enquanto canaliza magia','Ambientes sem mana enfraquecem','Espaços fechados limitam voo','Poderes psíquicos exigem contato visual','Ilusões quebram sob pressão','Runas precisam ser preparadas','Poderes de tempo têm alcance curto','Poderes espaciais exigem precisão','Regeneração consome energia','Supervelocidade exige pausas','Superforça reduz controle fino','Forma astral deixa o corpo imóvel','Poderes lunares variam com a noite','Poderes solares diminuem à noite','Vazio é difícil de controlar','Sensibilidade a ruídos intensos','Sentidos ampliados podem sobrecarregar','Absorção tem limite','Cópia de poder dura pouco','Adaptação precisa de exposição prévia'];
-const ORIGINS=['Vila esquecida','Capital imperial','Floresta ancestral','Montanhas proibidas','Deserto de vidro','Ilha flutuante','Cidade subterrânea','Reino costeiro','Templo em ruínas','Academia arcana','Laboratório abandonado','Nave perdida','Outro planeta','Lua distante','Plano astral','Dimensão sombria','Reino celestial','Abismo antigo','Pântano encantado','Vale dos dragões','Cidade tecnológica','Metrópole comum','Aldeia de caçadores','Clã nômade','Orfanato mágico','Família nobre','Família de aventureiros','Família desconhecida','Criado por espíritos','Criado por feras','Despertou sem memória','Reencarnado em outro mundo','Invocado por acidente','Criado artificialmente','Encontrado dentro de um cristal','Surgiu de uma tempestade','Caiu do céu','Veio do fundo do mar','Nasceu durante um eclipse','Nasceu durante chuva de meteoros','Sobreviveu a uma fenda dimensional','Veio de uma linha do tempo perdida','Escapou de um reino destruído','Herdeiro de um pacto antigo','Último de um pequeno clã','Origem totalmente desconhecida'];
+  const state = {
+    queue: [], cursor: 0, current: null, options: [], angle: 0, spinning: false,
+    results: [], sheet: {}, powerCount: 0, powerIndex: 0, enchantCount: 0, enchantIndex: 0,
+    usedPowers: new Set(), usedEnchants: new Set()
+  };
 
-const META={race:['Raça','🧬','Qual será sua raça?','100 possibilidades. Algumas abrem caminhos próprios.'],subtype:['Sub-raça / Linhagem','🧬','Que tipo exatamente?','Sua raça abriu uma ramificação especial.'],raceTrait:['Traço da Raça','✦','Qual característica especial veio com sua linhagem?','Essa etapa só aparece para certas raças.'],hasPower:['Poderes','✨','Você nasceu com algum poder?','Se cair SIM, a próxima roleta decide quantos.'],powerCount:['Quantidade de Poderes','🔢','Quantos poderes você terá?','Depois eles são rolados um por um, sem repetir.'],power:['Poder','⚡','Qual poder você recebeu?',`${POWERS.length} poderes diferentes na lista.`],class:['Classe','🛡️','Qual é sua classe principal?','Agora o personagem começa a tomar forma.'],affinity:['Afinidade','🔮','Qual é sua afinidade principal?','Ela pode combinar com seus poderes.'],talent:['Talento','🌟','Qual talento natural você possui?','Uma vantagem passiva independente dos poderes.'],weakness:['Limitação','⚖️','Qual é sua principal limitação?','Até personagem quebrado precisa de algum freio.'],origin:['Origem','🌌','De onde você veio?','Última roleta antes da ficha final.'],done:['Concluído','🏆','Personagem finalizado!','Abra sua ficha ou reinicie para criar outro.']};
+  const stage = (id, options, cfg = {}) => ({ id, options, ...cfg });
+  const family = () => D.familyOf(state.sheet.race);
+  const raceTraitOptions = () => D.RACE_BRANCH[family()] || D.RACE_BRANCH.other;
+  const raceRankOptions = () => D.RACE_RANK[family()] || D.RACE_RANK.other;
 
-const $=id=>document.getElementById(id), canvas=$('wheel'),ctx=canvas.getContext('2d'),spinBtn=$('spinBtn'),resultText=$('resultText'),wheelWrap=document.querySelector('.wheel-wrap');
-let stage='race',options=[...RACES],rotation=0,spinning=false,powerPool=[...POWERS],powerRollIndex=0,history=[],state=fresh();
-function fresh(){return{race:null,subtype:null,raceTrait:null,hasPower:null,powerCount:0,powers:[],class:null,affinity:null,talent:null,weakness:null,origin:null}}
-function rand(){if(crypto?.getRandomValues){const a=new Uint32Array(1);crypto.getRandomValues(a);return a[0]/4294967296}return Math.random()}
-function ri(n){return Math.floor(rand()*n)} function clamp(n,a,b){return Math.max(a,Math.min(b,n))}
-function esc(s){return String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
-function setStage(s,o){stage=s;options=[...o];rotation=0;const m=META[s];$('stageTitle').textContent=m[0];$('stageIcon').textContent=m[1];$('stageQuestion').textContent=m[2];$('stageHint').textContent=m[3];resultText.textContent=s==='done'?'Ficha pronta':'Toque em GIRAR';spinBtn.disabled=s==='done';spinBtn.textContent=s==='done'?'FIM':'GIRAR';$('stepLabel').textContent=s==='done'?'Finalizado':`Etapa ${history.length+1}`;$('progressFill').style.width=`${clamp((['race','subtype','raceTrait','hasPower','powerCount','power','class','affinity','talent','weakness','origin','done'].indexOf(s)/11)*100,4,100)}%`;renderOptions();draw()}
-function fit(){const d=Math.min(2,devicePixelRatio||1),w=Math.max(300,Math.floor(canvas.getBoundingClientRect().width*d));if(canvas.width!==w){canvas.width=w;canvas.height=w}}
-function draw(){fit();const z=canvas.width,c=z/2,r=z*.47;ctx.clearRect(0,0,z,z);if(stage==='done'){ctx.fillStyle='#171b25';ctx.beginPath();ctx.arc(c,c,r,0,Math.PI*2);ctx.fill();ctx.fillStyle='#fff';ctx.font=`800 ${z*.045}px system-ui`;ctx.textAlign='center';ctx.fillText('PERSONAGEM',c,c-z*.02);ctx.fillText('CONCLUÍDO',c,c+z*.04);return}const n=options.length||1,a=Math.PI*2/n,start=rotation-Math.PI/2;for(let i=0;i<n;i++){const a0=start+i*a;ctx.beginPath();ctx.moveTo(c,c);ctx.arc(c,c,r,a0,a0+a);ctx.closePath();ctx.fillStyle=`hsl(${(332+i*(n>80?1.6:8.5))%360} 74% ${25+(i%5)*2.2}%)`;ctx.fill();ctx.strokeStyle='rgba(255,255,255,.1)';ctx.stroke();if(n<=70||i%Math.ceil(n/70)===0){ctx.save();ctx.translate(c,c);ctx.rotate(a0+a/2);ctx.textAlign='right';ctx.textBaseline='middle';ctx.fillStyle='#fff';ctx.font=`700 ${Math.max(8,n>100?z*.0105:n>60?z*.0125:n>30?z*.016:z*.021)}px system-ui`;let t=String(options[i]);if(t.length>(n>100?16:20))t=t.slice(0,n>100?15:19)+'…';ctx.fillText(t,r-z*.028,0);ctx.restore()}}ctx.beginPath();ctx.arc(c,c,r*.28,0,Math.PI*2);ctx.fillStyle='#161a23';ctx.fill();ctx.strokeStyle='rgba(255,255,255,.12)';ctx.lineWidth=z*.012;ctx.stroke();ctx.beginPath();ctx.arc(c,c,r*.095,0,Math.PI*2);ctx.fillStyle='#323846';ctx.fill()}
-function spin(){if(spinning||stage==='done'||!options.length)return;spinning=true;spinBtn.disabled=true;wheelWrap.classList.add('spinning');const chosen=ri(options.length),a=Math.PI*2/options.length,current=((rotation%(Math.PI*2))+Math.PI*2)%(Math.PI*2),targetN=((-(chosen+.5)*a)%(Math.PI*2)+Math.PI*2)%(Math.PI*2);let delta=targetN-current;if(delta<0)delta+=Math.PI*2;const target=rotation+(6+Math.floor(rand()*4))*Math.PI*2+delta,start=rotation,dur=matchMedia('(prefers-reduced-motion: reduce)').matches?80:3300+rand()*900,t0=performance.now();resultText.textContent='Girando…';function f(now){const t=clamp((now-t0)/dur,0,1),e=1-Math.pow(1-t,4);rotation=start+(target-start)*e;draw();if(t<1)requestAnimationFrame(f);else finish(chosen)}requestAnimationFrame(f)}
-function finish(i){spinning=false;wheelWrap.classList.remove('spinning');rotation=((rotation%(Math.PI*2))+Math.PI*2)%(Math.PI*2);const v=options[i];resultText.textContent=v;history.push({label:stage==='power'?`Poder ${state.powers.length+1}`:META[stage][0],value:v});renderPath();setTimeout(()=>advance(v),matchMedia('(prefers-reduced-motion: reduce)').matches?30:800)}
-function advance(v){switch(stage){case'race':state.race=v;if(SUBTYPES[v])return setStage('subtype',SUBTYPES[v]);if(RACE_TRAITS[v])return setStage('raceTrait',RACE_TRAITS[v]);return setStage('hasPower',['Sim','Não']);case'subtype':state.subtype=v;if(RACE_TRAITS[state.race])return setStage('raceTrait',RACE_TRAITS[state.race]);return setStage('hasPower',['Sim','Não']);case'raceTrait':state.raceTrait=v;return setStage('hasPower',['Sim','Não']);case'hasPower':state.hasPower=v==='Sim';return state.hasPower?setStage('powerCount',['1','2','3','4','5']):setStage('class',CLASSES);case'powerCount':state.powerCount=Number(v);powerRollIndex=0;powerPool=[...POWERS];return setStage('power',powerPool);case'power':state.powers.push(v);powerRollIndex++;powerPool=powerPool.filter(x=>x!==v);return powerRollIndex<state.powerCount?setStage('power',powerPool):setStage('class',CLASSES);case'class':state.class=v;return setStage('affinity',AFFINITIES);case'affinity':state.affinity=v;return setStage('talent',TALENTS);case'talent':state.talent=v;return setStage('weakness',WEAKNESSES);case'weakness':state.weakness=v;return setStage('origin',ORIGINS);case'origin':state.origin=v;setStage('done',[]);renderSheet();open($('sheetPanel'))}}
-function renderPath(){$('pathCount').textContent=history.length;$('pathList').innerHTML=history.length?history.map(x=>`<span class="path-chip"><b>${esc(x.label)}</b>${esc(x.value)}</span>`).join(''):'<span class="empty">Nada rolado ainda.</span>'}
-function renderOptions(){const title=META[stage][0];$('optionsTitle').textContent=`${title} • ${options.length}`;$('optionSearch').value='';filterOptions('')}
-function filterOptions(q){q=q.trim().toLocaleLowerCase('pt-BR');const list=options.filter(v=>String(v).toLocaleLowerCase('pt-BR').includes(q));$('optionsGrid').innerHTML=list.length?list.map(v=>`<div class="option-item" title="${esc(v)}">${esc(v)}</div>`).join(''):'<span class="empty">Nenhum resultado.</span>'}
-function rows(){return[['Raça',state.race||'—'],['Sub-raça',state.subtype||'—'],['Traço racial',state.raceTrait||'—'],['Poderes',state.hasPower?(state.powers.join(', ')||'Ainda não rolados'):'Nenhum'],['Classe',state.class||'—'],['Afinidade',state.affinity||'—'],['Talento',state.talent||'—'],['Limitação',state.weakness||'—'],['Origem',state.origin||'—']]}
-function renderSheet(){$('sheetContent').innerHTML=rows().map(([k,v])=>`<div class="sheet-row"><span>${esc(k)}</span><strong>${esc(v)}</strong></div>`).join('')}
-function open(p){p.classList.remove('hidden');p.setAttribute('aria-hidden','false')} function close(p){p.classList.add('hidden');p.setAttribute('aria-hidden','true')}
-function toast(t){const e=$('toast');e.textContent=t;e.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove('show'),1600)}
-function reset(){if(spinning)return;state=fresh();history=[];powerPool=[...POWERS];powerRollIndex=0;renderPath();renderSheet();close($('optionsPanel'));close($('sheetPanel'));setStage('race',RACES);toast('Roleta reiniciada')}
-spinBtn.addEventListener('click',spin);$('resetBtn').addEventListener('click',reset);$('optionsBtn').addEventListener('click',()=>{renderOptions();open($('optionsPanel'))});$('sheetBtn').addEventListener('click',()=>{renderSheet();open($('sheetPanel'))});$('optionSearch').addEventListener('input',e=>filterOptions(e.target.value));document.querySelectorAll('[data-close="options"]').forEach(e=>e.addEventListener('click',()=>close($('optionsPanel'))));document.querySelectorAll('[data-close="sheet"]').forEach(e=>e.addEventListener('click',()=>close($('sheetPanel'))));$('copyBtn').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(rows().map(([k,v])=>`${k}: ${v}`).join('\n'));toast('Ficha copiada')}catch{toast('Não consegui copiar automaticamente')}});addEventListener('resize',draw,{passive:true});
-console.info(`[Roleta] ${RACES.length} raças, ${POWERS.length} poderes, ${CLASSES.length} classes.`);reset();
+  function initialQueue() {
+    return [
+      stage('race', () => D.RACES),
+      stage('subtype', () => D.subracesFor(state.sheet.race)),
+      stage('raceTrait', raceTraitOptions),
+      stage('raceRank', raceRankOptions),
+      stage('age', () => D.AGES),
+      stage('height', () => D.HEIGHTS),
+      stage('archetype', () => D.ARCHETYPES),
+      stage('title', () => D.TITLES),
+      stage('morality', () => D.MORALITY),
+      stage('social', () => D.SOCIAL),
+      stage('hasPower', () => D.HAS_POWER, { after: onHasPower }),
+      stage('class', () => D.CLASSES),
+      stage('affinity', () => D.AFFINITIES),
+      stage('talent', () => D.TALENTS),
+      stage('limit', () => D.LIMITS),
+      stage('intelligence', () => D.INTELLIGENCE),
+      stage('combat', () => D.COMBAT),
+      stage('speed', () => D.SPEED),
+      stage('resistance', () => D.SCALE),
+      stage('strength', () => D.SCALE),
+      stage('luck', () => D.LUCK),
+      stage('hasItem', () => D.HAS_ITEM, { after: onHasItem }),
+      stage('origin', () => D.ORIGINS),
+      stage('whatNow', () => D.WHAT_NOW)
+    ];
+  }
+
+  function insertAfterCurrent(stages) { state.queue.splice(state.cursor + 1, 0, ...stages); }
+
+  function onHasPower(value) {
+    if (value !== 'Sim') return;
+    insertAfterCurrent([stage('powerCount', () => D.POWER_COUNT, { after: onPowerCount })]);
+  }
+
+  function onPowerCount(value) {
+    state.powerCount = Math.max(1, Number(value) || 1);
+    state.powerIndex = 0;
+    insertPowerBundle();
+  }
+
+  function insertPowerBundle() {
+    state.powerIndex += 1;
+    const n = state.powerIndex;
+    const remaining = () => D.POWERS.filter(p => !state.usedPowers.has(p));
+    insertAfterCurrent([
+      stage('power', remaining, { label: `Poder ${n}/${state.powerCount}`, key: `power_${n}`, after: value => state.usedPowers.add(value) }),
+      stage('powerStyle', () => D.POWER_STYLE, { label: `Forma do poder ${n}/${state.powerCount}`, key: `powerStyle_${n}` }),
+      stage('powerRank', () => D.POWER_RANKS, { label: `Rank do poder ${n}/${state.powerCount}`, key: `powerRank_${n}` }),
+      stage('powerControl', () => D.POWER_CONTROL, { label: `Controle do poder ${n}/${state.powerCount}`, key: `powerControl_${n}` }),
+      stage('powerCost', () => D.POWER_COST, {
+        label: `Custo do poder ${n}/${state.powerCount}`, key: `powerCost_${n}`,
+        after: () => { if (state.powerIndex < state.powerCount) insertPowerBundle(); }
+      })
+    ]);
+  }
+
+  function onHasItem(value) {
+    if (value !== 'Sim') return;
+    insertAfterCurrent([
+      stage('item', () => D.FANTASY_ITEMS),
+      stage('mastery', () => D.MASTERY),
+      stage('enchantCount', () => D.ENCHANT_COUNT, { after: onEnchantCount })
+    ]);
+  }
+
+  function onEnchantCount(value) {
+    state.enchantCount = Math.max(0, Number(value) || 0);
+    state.enchantIndex = 0;
+    if (state.enchantCount > 0) insertEnchant();
+  }
+
+  function insertEnchant() {
+    state.enchantIndex += 1;
+    const n = state.enchantIndex;
+    insertAfterCurrent([
+      stage('enchant', () => D.ENCHANTMENTS.filter(e => !state.usedEnchants.has(e)), {
+        label: `Encantamento ${n}/${state.enchantCount}`, key: `enchant_${n}`,
+        after: value => {
+          state.usedEnchants.add(value);
+          if (state.enchantIndex < state.enchantCount) insertEnchant();
+        }
+      })
+    ]);
+  }
+
+  function resolveOptions(stageObj) {
+    const source = typeof stageObj.options === 'function' ? stageObj.options() : stageObj.options;
+    return Array.isArray(source) && source.length ? source.slice() : ['Nenhum'];
+  }
+
+  function currentMeta() {
+    const m = META[state.current?.id] || META.done;
+    return { title: state.current?.label || m[0], icon: m[1], question: m[2], hint: m[3] };
+  }
+
+  function beginStage() {
+    if (state.cursor >= state.queue.length) return finish();
+    state.current = state.queue[state.cursor];
+    state.options = resolveOptions(state.current);
+    const meta = currentMeta();
+    stageTitle.textContent = meta.title;
+    stageIcon.textContent = meta.icon;
+    stageQuestion.textContent = meta.question;
+    stageHint.textContent = `${meta.hint} • ${state.options.length} opções`;
+    resultText.textContent = 'Toque em GIRAR';
+    stepLabel.textContent = `Etapa ${state.cursor + 1} de ${state.queue.length}`;
+    progressFill.style.width = `${Math.max(2, (state.cursor / Math.max(1, state.queue.length)) * 100)}%`;
+    spinBtn.disabled = false;
+    spinBtn.textContent = 'GIRAR';
+    drawWheel();
+    renderOptions();
+  }
+
+  function finish() {
+    state.current = null;
+    state.options = [];
+    const m = META.done;
+    stageTitle.textContent = m[0];
+    stageIcon.textContent = m[1];
+    stageQuestion.textContent = m[2];
+    stageHint.textContent = m[3];
+    resultText.textContent = state.sheet.title || 'PERSONAGEM CONCLUÍDO';
+    stepLabel.textContent = `Concluído • ${state.results.length} resultados`;
+    progressFill.style.width = '100%';
+    spinBtn.disabled = true;
+    spinBtn.textContent = 'CONCLUÍDO';
+    drawFinished();
+    renderSheet();
+  }
+
+  function drawFinished() {
+    const { width, height } = canvas;
+    ctx.clearRect(0,0,width,height);
+    const g = ctx.createRadialGradient(width/2,height/2,20,width/2,height/2,width/2);
+    g.addColorStop(0,'#262a36'); g.addColorStop(1,'#080a10');
+    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(width/2,height/2,width*0.47,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.font = '700 62px system-ui';
+    ctx.fillText('FICHA',width/2,height/2-26);
+    ctx.font = '500 28px system-ui'; ctx.fillStyle = '#aab2c8';
+    ctx.fillText(`${state.results.length} resultados`,width/2,height/2+44);
+  }
+
+  function drawWheel() {
+    const opts = state.options;
+    const n = Math.max(1, opts.length);
+    const w = canvas.width, h = canvas.height, cx = w/2, cy = h/2, radius = Math.min(w,h)*0.46;
+    ctx.clearRect(0,0,w,h);
+    ctx.save(); ctx.translate(cx,cy); ctx.rotate(state.angle);
+    for (let i=0;i<n;i++) {
+      const start = (i/n)*Math.PI*2 - Math.PI/2;
+      const end = ((i+1)/n)*Math.PI*2 - Math.PI/2;
+      ctx.beginPath(); ctx.moveTo(0,0); ctx.arc(0,0,radius,start,end); ctx.closePath();
+      const colors = n > 45 ? palette : darkPalette;
+      ctx.fillStyle = colors[i % colors.length]; ctx.fill();
+      ctx.strokeStyle = 'rgba(255,255,255,.10)'; ctx.lineWidth = n > 80 ? 1 : 2; ctx.stroke();
+      if (n <= 160) {
+        const mid = (start+end)/2;
+        ctx.save(); ctx.rotate(mid); ctx.translate(radius*0.68,0); ctx.rotate(Math.PI/2);
+        const label = String(opts[i]);
+        const fontSize = n > 100 ? 12 : n > 60 ? 15 : n > 35 ? 19 : n > 18 ? 24 : 31;
+        ctx.font = `600 ${fontSize}px system-ui`; ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        const max = n > 60 ? 18 : 24;
+        ctx.fillText(label.length > max ? `${label.slice(0,max-1)}…` : label,0,0);
+        ctx.restore();
+      }
+    }
+    ctx.restore();
+    ctx.beginPath(); ctx.arc(cx,cy,radius*0.25,0,Math.PI*2); ctx.fillStyle = '#151820'; ctx.fill();
+    ctx.beginPath(); ctx.arc(cx,cy,radius*0.11,0,Math.PI*2); ctx.fillStyle = '#303541'; ctx.fill();
+    ctx.beginPath(); ctx.arc(cx,cy,radius*0.075,0,Math.PI*2); ctx.fillStyle = '#14171d'; ctx.fill();
+  }
+
+  function spin() {
+    if (state.spinning || !state.current || !state.options.length) return;
+    state.spinning = true; spinBtn.disabled = true; resultText.textContent = 'Girando…';
+    const n = state.options.length;
+    const targetIndex = Math.floor(Math.random()*n);
+    const slice = Math.PI*2/n;
+    const targetAngle = -(targetIndex*slice + slice/2);
+    const startAngle = state.angle;
+    const turns = 6 + Math.floor(Math.random()*5);
+    const rawEnd = targetAngle - turns*Math.PI*2;
+    const duration = 3000 + Math.random()*1200;
+    const startTime = performance.now();
+    const ease = t => 1 - Math.pow(1-t,4);
+    function frame(now) {
+      const t = Math.min(1,(now-startTime)/duration);
+      state.angle = startAngle + (rawEnd-startAngle)*ease(t);
+      drawWheel();
+      if (t < 1) return requestAnimationFrame(frame);
+      state.angle = targetAngle; drawWheel(); state.spinning = false; spinBtn.disabled = false;
+      acceptResult(state.options[targetIndex]);
+    }
+    requestAnimationFrame(frame);
+  }
+
+  function storeResult(stageObj, value) {
+    const meta = currentMeta();
+    const key = stageObj.key || stageObj.id;
+    state.sheet[key] = value;
+    state.results.push({ id: stageObj.id, key, label: meta.title, value });
+    renderPath(); renderSheet();
+  }
+
+  function acceptResult(value) {
+    const stageObj = state.current;
+    resultText.textContent = value;
+    storeResult(stageObj, value);
+    if (typeof stageObj.after === 'function') stageObj.after(value);
+    spinBtn.textContent = 'PRÓXIMA';
+    spinBtn.onclick = nextStage;
+  }
+
+  function nextStage() {
+    spinBtn.onclick = spin;
+    state.cursor += 1;
+    beginStage();
+  }
+
+  function renderPath() {
+    pathCount.textContent = String(state.results.length);
+    if (!state.results.length) { pathList.innerHTML = '<span class="empty">Nada rolado ainda.</span>'; return; }
+    pathList.innerHTML = state.results.slice().reverse().map(item => `
+      <div class="path-chip"><b>${escapeHtml(item.label)}</b><span>${escapeHtml(String(item.value))}</span></div>
+    `).join('');
+  }
+
+  function renderSheet() {
+    if (!state.results.length) { sheetContent.innerHTML = '<p class="empty">Gire a primeira roleta para começar.</p>'; return; }
+    sheetContent.innerHTML = state.results.map(item => `
+      <div class="sheet-row"><span>${escapeHtml(item.label)}</span><strong>${escapeHtml(String(item.value))}</strong></div>
+    `).join('');
+  }
+
+  function renderOptions(filter='') {
+    if (!state.current) { optionsTitle.textContent = 'Sem etapa ativa'; optionsGrid.innerHTML = ''; return; }
+    optionsTitle.textContent = `${currentMeta().title} • ${state.options.length}`;
+    const q = filter.trim().toLocaleLowerCase('pt-BR');
+    const visible = state.options.filter(x => String(x).toLocaleLowerCase('pt-BR').includes(q));
+    optionsGrid.innerHTML = visible.map(x => `<div class="option-item">${escapeHtml(String(x))}</div>`).join('');
+  }
+
+  function escapeHtml(value) {
+    return String(value).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+  }
+
+  function openPanel(panel) { panel.classList.remove('hidden'); panel.setAttribute('aria-hidden','false'); }
+  function closePanel(panel) { panel.classList.add('hidden'); panel.setAttribute('aria-hidden','true'); }
+  function showToast(message) {
+    toast.textContent = message; toast.classList.add('show'); clearTimeout(showToast.timer);
+    showToast.timer = setTimeout(() => toast.classList.remove('show'), 1800);
+  }
+  function sheetText() {
+    const title = state.sheet.title ? `— ${state.sheet.title} —\n` : '';
+    return `${title}${state.results.map(r => `${r.label}: ${r.value}`).join('\n')}`;
+  }
+  async function copySheet() {
+    try { await navigator.clipboard.writeText(sheetText()); showToast('Ficha copiada.'); }
+    catch { showToast('Não foi possível copiar automaticamente.'); }
+  }
+
+  function resetAll() {
+    if (state.spinning) return;
+    state.queue = initialQueue(); state.cursor = 0; state.current = null; state.options = []; state.angle = 0;
+    state.results = []; state.sheet = {}; state.powerCount = 0; state.powerIndex = 0; state.enchantCount = 0; state.enchantIndex = 0;
+    state.usedPowers = new Set(); state.usedEnchants = new Set(); spinBtn.onclick = spin;
+    renderPath(); renderSheet(); beginStage(); showToast('Roleta reiniciada.');
+  }
+
+  spinBtn.onclick = spin;
+  resetBtn.addEventListener('click', resetAll);
+  optionsBtn.addEventListener('click', () => openPanel(optionsPanel));
+  sheetBtn.addEventListener('click', () => { renderSheet(); openPanel(sheetPanel); });
+  copyBtn.addEventListener('click', copySheet);
+  optionSearch.addEventListener('input', e => renderOptions(e.target.value));
+  document.querySelectorAll('[data-close]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (btn.dataset.close === 'options') closePanel(optionsPanel);
+      if (btn.dataset.close === 'sheet') closePanel(sheetPanel);
+    });
+  });
+  [optionsPanel,sheetPanel].forEach(panel => panel.addEventListener('click', e => { if (e.target === panel) closePanel(panel); }));
+
+  resetAll();
+})();
