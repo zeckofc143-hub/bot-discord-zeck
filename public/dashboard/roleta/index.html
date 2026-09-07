@@ -7,6 +7,7 @@
   <title>Roleta Multiverso</title>
   <link rel="stylesheet" href="./styles.css" />
   <link rel="stylesheet" href="./styles-v6.css" />
+  <link rel="stylesheet" href="./styles-v7.css" />
 </head>
 <body>
   <main class="app-shell">
@@ -14,7 +15,7 @@
       <div>
         <p class="eyebrow">ROLETA ENCADEADA • FANMADE</p>
         <h1>Roleta Multiverso</h1>
-        <p class="subtitle">Raças conhecidas + ficção nerd • 4.000+ poderes • sub-roletas que mudam conforme o resultado • status ao vivo</p>
+        <p class="subtitle">110+ raças reconhecíveis • 4.000+ poderes • sub-raças coerentes • bônus, habilidades e fraquezas aplicados à ficha</p>
       </div>
       <button id="resetBtn" class="ghost-btn" type="button">↻ Reiniciar</button>
     </header>
@@ -36,7 +37,7 @@
 
     <section class="wheel-wrap">
       <div class="pointer" aria-hidden="true"></div>
-      <canvas id="wheel" width="1000" height="1000" aria-label="Roleta"></canvas>
+      <canvas id="wheel" width="1100" height="1100" aria-label="Roleta"></canvas>
       <button id="spinBtn" class="spin-btn" type="button">GIRAR</button>
     </section>
 
@@ -45,13 +46,13 @@
       <button id="sheetBtn" class="secondary-btn" type="button">📜 Minha ficha</button>
     </section>
 
-    <section id="liveStatus" class="live-status" aria-label="Status atual do personagem"></section>
+    <section id="liveStatus" class="live-status" aria-label="Resultados, efeitos e status atual"></section>
 
     <section id="pathCard" class="path-card">
       <div class="section-heading">
         <div>
-          <p class="eyebrow">SEU CAMINHO</p>
-          <h3>Resultados até agora</h3>
+          <p class="eyebrow">HISTÓRICO</p>
+          <h3>Resultados da roleta</h3>
         </div>
         <span id="pathCount" class="counter">0</span>
       </div>
@@ -60,10 +61,7 @@
 
     <section id="optionsPanel" class="drawer hidden" aria-hidden="true">
       <div class="drawer-head">
-        <div>
-          <p class="eyebrow">OPÇÕES DA ETAPA</p>
-          <h3 id="optionsTitle">Raças</h3>
-        </div>
+        <div><p class="eyebrow">OPÇÕES DA ETAPA</p><h3 id="optionsTitle">Raças</h3></div>
         <button class="icon-btn" data-close="options" type="button" aria-label="Fechar">✕</button>
       </div>
       <input id="optionSearch" class="search" type="search" placeholder="Pesquisar..." autocomplete="off" />
@@ -72,10 +70,7 @@
 
     <section id="sheetPanel" class="drawer hidden" aria-hidden="true">
       <div class="drawer-head">
-        <div>
-          <p class="eyebrow">PERSONAGEM</p>
-          <h3>Sua ficha</h3>
-        </div>
+        <div><p class="eyebrow">PERSONAGEM</p><h3>Sua ficha</h3></div>
         <button class="icon-btn" data-close="sheet" type="button" aria-label="Fechar">✕</button>
       </div>
       <div id="sheetContent" class="sheet-content"></div>
@@ -88,7 +83,7 @@
   <script src="./mega-addon.js" defer></script>
   <script src="./mega-extra.js" defer></script>
   <script src="./expansion-v5.js" defer></script>
-  <script src="./races-v6.js" defer></script>
-  <script src="./app-v6.js" defer></script>
+  <script src="./races-v7.js" defer></script>
+  <script src="./app-v7.js" defer></script>
 </body>
 </html>
