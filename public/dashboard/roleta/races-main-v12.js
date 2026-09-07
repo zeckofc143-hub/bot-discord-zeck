@@ -1,0 +1,6 @@
+(()=>{'use strict';const D=window.ROULETTE_DATA;if(!D)return;const S=s=>s.split('|');
+// Lista FINAL da roleta principal. Bancos antigos continuam existindo para sub-roletas,
+// mas espécies muito obscuras não entram mais na primeira rolagem.
+D.RACES=S('Humano|Vampiro|Lobisomem|Demônio|Diabo|Anjo|Anjo Caído|Dragão|Elfo|Anão|Orc|Goblin|Troll|Ogro|Gigante|Fada|Sereia|Tritão|Centauro|Minotauro|Sátiro|Harpia|Fênix|Grifo|Golem|Slime|Zumbi|Esqueleto|Fantasma|Espectro|Lich|Djinn|Oni|Kitsune|Tengu|Nagá|Lâmia|Gárgula|Ciclope|Metamorfo|Elemental|Espírito|Deus|Semideus|Mutante|Ciborgue|Androide|Alienígena|Simbionte|Viltrumita|Kryptoniano|Marciano|Asgardiano|Eterno|Inumano|Klyntar|Celestial|Saiyajin|Namekuseijin|Majin|Raça do Freeza|Kaioshin|Ghoul|Titã|Shinigami|Hollow|Quincy|Arrancar|Fullbringer|Otsutsuki|Espírito Amaldiçoado|Demônio de Kimetsu|Quimera Ant|Homúnculo|Homem-Peixe|Mink|Lunarian|Seraphim|Hylian|Gerudo|Goron|Zora|Rito|Tiefling|Dragonborn|Aasimar|Warforged|Yautja|Xenomorfo|Na’vi|Cybertroniano|Wookiee|Pokémon|Digimon|Kaiju');
+D.MAIN_RACE_POOL_VERSION='V12';
+})();
