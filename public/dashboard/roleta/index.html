@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#080a10" />
+  <title>Roleta Multiverso</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <main class="app-shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">ROLETA ENCADEADA • FANMADE</p>
+        <h1>Roleta Multiverso</h1>
+        <p class="subtitle">100 raças • sub-raças condicionais • 380 poderes • classe, afinidade e mais</p>
+      </div>
+      <button id="resetBtn" class="ghost-btn" type="button">↻ Reiniciar</button>
+    </header>
+
+    <section class="progress-card" aria-label="Progresso da roleta">
+      <div class="progress-copy">
+        <span id="stepLabel">Etapa 1</span>
+        <strong id="stageTitle">Raça</strong>
+      </div>
+      <div class="progress-track"><span id="progressFill"></span></div>
+    </section>
+
+    <section class="result-card">
+      <div id="stageIcon" class="stage-icon" aria-hidden="true">🧬</div>
+      <p id="stageQuestion">Qual será sua raça?</p>
+      <h2 id="resultText">Toque em GIRAR</h2>
+      <p id="stageHint">O resultado decide o próximo caminho.</p>
+    </section>
+
+    <section class="wheel-wrap">
+      <div class="pointer" aria-hidden="true"></div>
+      <canvas id="wheel" width="900" height="900" aria-label="Roleta"></canvas>
+      <button id="spinBtn" class="spin-btn" type="button">GIRAR</button>
+    </section>
+
+    <section class="actions-row">
+      <button id="optionsBtn" class="secondary-btn" type="button">☰ Ver opções</button>
+      <button id="sheetBtn" class="secondary-btn" type="button">📜 Minha ficha</button>
+    </section>
+
+    <section id="pathCard" class="path-card">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">SEU CAMINHO</p>
+          <h3>Resultados até agora</h3>
+        </div>
+        <span id="pathCount" class="counter">0</span>
+      </div>
+      <div id="pathList" class="path-list"><span class="empty">Nada rolado ainda.</span></div>
+    </section>
+
+    <section id="optionsPanel" class="drawer hidden" aria-hidden="true">
+      <div class="drawer-head">
+        <div>
+          <p class="eyebrow">OPÇÕES DA ETAPA</p>
+          <h3 id="optionsTitle">Raças</h3>
+        </div>
+        <button class="icon-btn" data-close="options" type="button" aria-label="Fechar">✕</button>
+      </div>
+      <input id="optionSearch" class="search" type="search" placeholder="Pesquisar..." autocomplete="off" />
+      <div id="optionsGrid" class="options-grid"></div>
+    </section>
+
+    <section id="sheetPanel" class="drawer hidden" aria-hidden="true">
+      <div class="drawer-head">
+        <div>
+          <p class="eyebrow">PERSONAGEM</p>
+          <h3>Sua ficha</h3>
+        </div>
+        <button class="icon-btn" data-close="sheet" type="button" aria-label="Fechar">✕</button>
+      </div>
+      <div id="sheetContent" class="sheet-content"></div>
+      <button id="copyBtn" class="secondary-btn full" type="button">Copiar ficha</button>
+    </section>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  </main>
+  <script src="./app.js" defer></script>
+</body>
+</html>
