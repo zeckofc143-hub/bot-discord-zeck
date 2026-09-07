@@ -11,14 +11,15 @@
   <link rel="stylesheet" href="./styles-v11.css" />
   <link rel="stylesheet" href="./styles-v12-mobile.css" />
   <link rel="stylesheet" href="./styles-v13-details.css" />
+  <link rel="stylesheet" href="./styles-v14-performance.css" />
 </head>
 <body>
   <main class="app-shell">
     <header class="topbar">
       <div>
-        <p class="eyebrow">ROLETA ENCADEADA • FANMADE • V13 DOSSIÊ</p>
+        <p class="eyebrow">ROLETA ENCADEADA • FANMADE • V14 MOBILE</p>
         <h1>Roleta Multiverso</h1>
-        <p class="subtitle">Raças explicadas em detalhes • buffs, debuffs, habilidades, fraquezas e resistências • sub-roletas com chances • 20 status • cada resultado explicado • mobile-first</p>
+        <p class="subtitle">Raças explicadas em detalhes • buffs, debuffs, habilidades, fraquezas e resistências • sub-roletas com chances • 20 status • cada resultado explicado • mobile-first otimizado</p>
       </div>
       <button id="resetBtn" class="ghost-btn" type="button">↻ Reiniciar</button>
     </header>
@@ -40,7 +41,7 @@
 
     <section class="wheel-wrap">
       <div class="pointer" aria-hidden="true"></div>
-      <canvas id="wheel" width="1200" height="1200" aria-label="Roleta"></canvas>
+      <canvas id="wheel" width="720" height="720" aria-label="Roleta"></canvas>
       <button id="spinBtn" class="spin-btn" type="button">GIRAR</button>
     </section>
 
@@ -99,5 +100,6 @@
   <script src="./race-details-v13.js" defer></script>
   <script src="./app-v11.js" defer></script>
   <script src="./details-ui-v13.js" defer></script>
+  <script src="./performance-v14.js" defer></script>
 </body>
 </html>
