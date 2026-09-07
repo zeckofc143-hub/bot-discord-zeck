@@ -10,14 +10,15 @@
   <link rel="stylesheet" href="./styles-v7.css" />
   <link rel="stylesheet" href="./styles-v11.css" />
   <link rel="stylesheet" href="./styles-v12-mobile.css" />
+  <link rel="stylesheet" href="./styles-v13-details.css" />
 </head>
 <body>
   <main class="app-shell">
     <header class="topbar">
       <div>
-        <p class="eyebrow">ROLETA ENCADEADA • FANMADE • V12 MOBILE</p>
+        <p class="eyebrow">ROLETA ENCADEADA • FANMADE • V13 DOSSIÊ</p>
         <h1>Roleta Multiverso</h1>
-        <p class="subtitle">Raças reconhecíveis • 4.000+ poderes • sub-roletas com chances visíveis • efeitos completos • 20 status detalhados • feito primeiro para celular</p>
+        <p class="subtitle">Raças explicadas em detalhes • buffs, debuffs, habilidades, fraquezas e resistências • sub-roletas com chances • 20 status • cada resultado explicado • mobile-first</p>
       </div>
       <button id="resetBtn" class="ghost-btn" type="button">↻ Reiniciar</button>
     </header>
@@ -48,6 +49,7 @@
       <button id="sheetBtn" class="secondary-btn" type="button">📜 Minha ficha</button>
     </section>
 
+    <section id="resultDetails" aria-label="Explicação detalhada do resultado"></section>
     <section id="liveStatus" class="live-status" aria-label="Resultados, efeitos e status atual"></section>
 
     <section id="pathCard" class="path-card">
@@ -92,6 +94,10 @@
   <script src="./subroulette-balance-v9.js" defer></script>
   <script src="./sizes-v11.js" defer></script>
   <script src="./effects-v11.js" defer></script>
+  <script src="./race-meta-v13.js" defer></script>
+  <script src="./race-rules-v13.js" defer></script>
+  <script src="./race-details-v13.js" defer></script>
   <script src="./app-v11.js" defer></script>
+  <script src="./details-ui-v13.js" defer></script>
 </body>
 </html>
