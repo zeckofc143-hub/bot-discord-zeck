@@ -1,0 +1,9 @@
+(()=>{'use strict';const D=window.ROULETTE_DATA;if(!D)return;const Z='\u200B',clean=v=>String(v??'').replace(/\u200B/g,''),uniq=a=>[...new Set((a||[]).map(clean).filter(Boolean))];
+function rarityWeight(name,stage){const t=clean(name).toLowerCase();if(/deus|primordial|fundador|imperial$|real$|vasto lorde|serafim|cósmic|temporal|dimensional|primeiro sangue/.test(t))return 1;if(/ancestral|rei|rainha|arquidem|arcanjo|capitão|elite|sangue puro|sangue-puro|linhagem imperial|casa de el|casa de zod/.test(t))return 2;if(/nobre|lorde|alfa|especial|antiga|antigo|mutante raro|rara|ascendido|kakuja|veterano/.test(t))return 4;if(/híbrido|místico|arcano|sombrio|demoníaco|abissal|psíquico|guerreiro|militar|científica/.test(t))return 6;if(/comum|sem linhagem|sem clã|sem casa|sem família|convertido|cidadão|classe baixa|oficial|academia|natural/.test(t))return stage==='raceLineage'?12:10;return stage==='raceLineage'?8:7}
+function expand(arr,stage){const out=[];for(const n of uniq(arr)){const w=rarityWeight(n,stage);for(let i=0;i<w;i++)out.push(n+Z.repeat(i));}return out}
+const t=D.raceTypesFor,l=D.raceLineageFor,r=D.raceTraitFor,e=D.typeEffectsFor;
+D.raceTypesFor=race=>expand(t?.(race)||['Comum'],'raceType');
+D.raceLineageFor=race=>{let a=l?.(race)||[];if(a.length<8){a=[...a,'Sem Linhagem','Linhagem Comum','Clã Guerreiro','Linhagem Mística','Linhagem Nobre','Clã Antigo','Linhagem Híbrida','Mutação Rara','Linhagem Ancestral','Linhagem Primordial'];}return expand(a,'raceLineage')};
+D.raceTraitFor=race=>{let a=r?.(race)||[];if(a.length<8)a=[...a,'Força Racial','Resistência Racial','Sentidos Aprimorados','Adaptação Racial','Afinidade Natural','Regeneração Leve','Potencial Elevado','Traço Ancestral'];return expand(a,'raceTrait')};
+D.typeEffectsFor=v=>e?e(clean(v)):[];D.cleanWeightedValue=clean;
+})();
