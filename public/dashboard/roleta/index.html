@@ -8,14 +8,15 @@
   <link rel="stylesheet" href="./styles.css" />
   <link rel="stylesheet" href="./styles-v6.css" />
   <link rel="stylesheet" href="./styles-v7.css" />
+  <link rel="stylesheet" href="./styles-v11.css" />
 </head>
 <body>
   <main class="app-shell">
     <header class="topbar">
       <div>
-        <p class="eyebrow">ROLETA ENCADEADA • FANMADE</p>
+        <p class="eyebrow">ROLETA ENCADEADA • FANMADE • V11</p>
         <h1>Roleta Multiverso</h1>
-        <p class="subtitle">110+ raças reconhecíveis • 4.000+ poderes • sub-roletas com fatias proporcionais à chance • idade por faixas • bônus, habilidades e fraquezas aplicados à ficha</p>
+        <p class="subtitle">110+ raças • 4.000+ poderes • sub-roletas com chances visíveis • cada resultado gera efeitos • 20 status detalhados • fraquezas, resistências, passivos, condições e perfil mental/social</p>
       </div>
       <button id="resetBtn" class="ghost-btn" type="button">↻ Reiniciar</button>
     </header>
@@ -37,7 +38,7 @@
 
     <section class="wheel-wrap">
       <div class="pointer" aria-hidden="true"></div>
-      <canvas id="wheel" width="1100" height="1100" aria-label="Roleta"></canvas>
+      <canvas id="wheel" width="1200" height="1200" aria-label="Roleta"></canvas>
       <button id="spinBtn" class="spin-btn" type="button">GIRAR</button>
     </section>
 
@@ -70,11 +71,11 @@
 
     <section id="sheetPanel" class="drawer hidden" aria-hidden="true">
       <div class="drawer-head">
-        <div><p class="eyebrow">PERSONAGEM</p><h3>Sua ficha</h3></div>
+        <div><p class="eyebrow">PERSONAGEM</p><h3>Sua ficha completa</h3></div>
         <button class="icon-btn" data-close="sheet" type="button" aria-label="Fechar">✕</button>
       </div>
       <div id="sheetContent" class="sheet-content"></div>
-      <button id="copyBtn" class="secondary-btn full" type="button">Copiar ficha</button>
+      <button id="copyBtn" class="secondary-btn full" type="button">Copiar ficha detalhada</button>
     </section>
 
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
@@ -87,6 +88,8 @@
   <script src="./numbers-v8.js" defer></script>
   <script src="./subroulette-v9.js" defer></script>
   <script src="./subroulette-balance-v9.js" defer></script>
-  <script src="./app-v10.js" defer></script>
+  <script src="./sizes-v11.js" defer></script>
+  <script src="./effects-v11.js" defer></script>
+  <script src="./app-v11.js" defer></script>
 </body>
 </html>
